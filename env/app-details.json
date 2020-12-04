@@ -1,0 +1,27 @@
+{
+  "dev": {
+    "appKey": "HomeH.HH_Ship_To_Home.1.0.0.Release",
+    "sharedSecret": "ec2c5c8d68e941ee897c8629eb75b912",
+    "devAccountId": 6584
+  },
+  "qa": {
+    "appKey": "HomeH.HH_Ship_To_Home.1.0.0.Release",
+    "sharedSecret": "ec2c5c8d68e941ee897c8629eb75b912",
+    "devAccountId": 6584
+  },
+  "uat": {
+    "appKey": "HomeH.HH_Ship_To_Home.1.0.0.Release",
+    "sharedSecret": "ec2c5c8d68e941ee897c8629eb75b912",
+    "devAccountId": 6584
+  },
+  "training": {
+    "appKey": "HomeH.HH_Ship_To_Home.1.0.0.Release",
+    "sharedSecret": "ec2c5c8d68e941ee897c8629eb75b912",
+    "devAccountId": 6584
+  },
+  "prod": {
+    "appKey": "HomeH.HH_Ship_To_Home.1.0.0.Release",
+    "sharedSecret": "ec2c5c8d68e941ee897c8629eb75b912",
+    "devAccountId": 6584
+  }
+}
