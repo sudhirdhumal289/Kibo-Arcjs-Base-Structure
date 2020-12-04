@@ -1,0 +1,47 @@
+{
+  "name": "cp-arc-js",
+  "version": "0.1.0",
+  "description": "Arc.js Application Base Structure",
+  "scripts": {
+    "test": "mocha assets/tests --full-trace --ui bdd --reporter mocha-multi-reporters --reporter-options configFile=multi-reporter-config.json",
+    "coverage": "nyc --reporter lcov --reporter text npm run test",
+    "build": "grunt build && node env/pre-sync.js --env "
+  },
+  "private": true,
+  "author": {
+    "name": "Sudhir Dhumal",
+    "email": "sudhirdhumal289@gmail.com",
+    "url": "https://github.com/sudhirdhumal289"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sudhirdhumal289/Kibo-Arcjs-Base-Structure.git"
+  },
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "chai": "^4.2.0",
+    "commander": "^4.0.1",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
+    "grunt": "^1.0.4",
+    "grunt-browserify": "^5.3.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-eslint": "^22.0.0",
+    "grunt-mocha-test": "^0.13.3",
+    "grunt-mozu-appdev-sync": "^2.4.1",
+    "load-grunt-tasks": "^5.1.0",
+    "mocha": "^8.1.1",
+    "nock": "^11.9.1",
+    "time-grunt": "^2.0.0",
+    "mocha-multi-reporters": "^1.1.7",
+    "mocha-sonarqube-reporter": "^1.0.1",
+    "nyc": "^15.1.0"
+  },
+  "dependencies": {
+    "mozu-action-helpers": "^0.5.6",
+    "mozu-node-sdk": "^2.14.0"
+  }
+}

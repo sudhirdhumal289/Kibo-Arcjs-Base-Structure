@@ -1,0 +1,40 @@
+{
+  "env": {
+    "browser": false,
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "globals": {
+    "logServer": "writable"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:node/recommended"
+  ],
+  "rules": {
+    "class-methods-use-this": "off",
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "no-buffer-constructor": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 120,
+        "comments": 120,
+        "ignoreComments": false,
+        "ignoreTrailingComments": false,
+        "ignoreUrls": false,
+        "ignoreStrings": false,
+        "ignoreTemplateLiterals": false,
+        "ignoreRegExpLiterals": true,
+        "tabWidth": 2
+      }
+    ]
+  }
+}

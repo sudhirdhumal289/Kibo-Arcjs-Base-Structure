@@ -1,0 +1,16 @@
+{
+  "all": true,
+  "check-coverage": true,
+  "include": [
+    "assets/src/**/*.js"
+  ],
+  "exclude": [
+    "assets/src/bundles/**",
+    "assets/dist/**"
+  ],
+  "excludeNodeModules": true,
+  "branches": 70,
+  "lines": 70,
+  "functions": 70,
+  "statements": 70
+}
