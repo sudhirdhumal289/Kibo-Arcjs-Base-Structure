@@ -5,7 +5,7 @@
   "scripts": {
     "test": "mocha assets/tests --full-trace --ui bdd --reporter mocha-multi-reporters --reporter-options configFile=multi-reporter-config.json",
     "coverage": "nyc --reporter lcov --reporter text npm run test",
-    "build": "grunt build && node env/pre-sync.js --env "
+    "build": "node env/pre-sync.js --env $NODE_ENV && grunt build"
   },
   "private": true,
   "author": {

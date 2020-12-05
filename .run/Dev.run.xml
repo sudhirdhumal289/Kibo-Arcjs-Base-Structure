@@ -5,9 +5,10 @@
     <scripts>
       <script value="build" />
     </scripts>
-    <arguments value="-- dev" />
     <node-interpreter value="project" />
-    <envs />
+    <envs>
+      <env name="NODE_ENV" value="dev" />
+    </envs>
     <method v="2" />
   </configuration>
 </component>
