@@ -1,5 +1,5 @@
-# HH Postal Code Validation #
-This repository contains code required for postal code validation.
+# Kibo Arc.js Base Structure #
+This repository contains base structure for building Arc.js application
 ###### Version: 1.0 ######
 
 ***
