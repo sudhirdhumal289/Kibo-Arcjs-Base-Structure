@@ -41,7 +41,8 @@ class RequestWrapper {
             } else {
               resolve();
             }
-          }).catch(reject);
+          })
+            .catch(reject);
         } else if (returnValue) {
           if (returnValue.redirectUrl) {
             context.response.redirect(returnValue.redirectUrl);
@@ -89,11 +90,19 @@ class RequestWrapper {
 
     controllerActionPromise.then((resp) => {
       clearInterval(waitInterval);
-      callback(resp || undefined);
-    }).catch((error) => {
-      clearInterval(waitInterval);
-      callback(error || undefined);
-    });
+
+      const finalResponse = resp || response.body;
+
+      if (!finalResponse.redirectUrl) {
+        context.response.body = finalResponse;
+      }
+
+      callback();
+    })
+      .catch((error) => {
+        clearInterval(waitInterval);
+        callback(error || undefined);
+      });
   }
 }
 
