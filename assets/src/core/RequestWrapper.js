@@ -33,10 +33,7 @@ class RequestWrapper {
 
         if (returnValue && returnValue.then) {
           returnValue.then((resp) => {
-            if (resp && resp.redirectUrl) {
-              context.response.redirect(resp.redirectUrl);
-              resolve();
-            } else if (resp) {
+            if (resp) {
               resolve(resp);
             } else {
               resolve();
@@ -44,12 +41,7 @@ class RequestWrapper {
           })
             .catch(reject);
         } else if (returnValue) {
-          if (returnValue.redirectUrl) {
-            context.response.redirect(returnValue.redirectUrl);
-            resolve();
-          } else {
-            resolve(returnValue);
-          }
+          resolve(returnValue);
         } else {
           resolve();
         }
@@ -59,11 +51,11 @@ class RequestWrapper {
     });
   }
 
-  service(context, callback) {
+  service(context, callback, isArcAction) {
+    this.isArcAction = isArcAction;
     const request = context.request || {};
 
     const contextResp = context.response ? context.response : {};
-    // eslint-disable-next-line prefer-object-spread
     const response = {
       body: contextResp.body,
       redirect(redirectUrl) {
@@ -83,7 +75,17 @@ class RequestWrapper {
       timeElapsed += this.config.sleepTimeInMilliSeconds;
 
       if (timeElapsed >= this.config.timeoutInMilliSeconds) {
-        callback(new Error('Function execution timed-out'));
+        // If Arc.js action then pass error to callback else set the context body.
+        if (this.isArcAction) {
+          callback(new Error('Function execution timed-out'));
+        } else {
+          context.response.body = {
+            status: 'Failure',
+            error: ['Function execution timed-out'],
+          };
+
+          callback();
+        }
         clearInterval(waitInterval);
       }
     }, this.config.sleepTimeInMilliSeconds);
@@ -91,17 +93,29 @@ class RequestWrapper {
     controllerActionPromise.then((resp) => {
       clearInterval(waitInterval);
 
-      const finalResponse = resp || response.body;
+      if (!this.isArcAction) {
+        const finalResponse = resp || response.body || context.response.body;
 
-      if (!finalResponse.redirectUrl) {
-        context.response.body = finalResponse;
+        if (finalResponse && finalResponse.redirectUrl) {
+          context.response.redirect(resp.redirectUrl);
+        } else if (finalResponse) {
+          context.response.body = finalResponse;
+        }
       }
 
       callback();
     })
       .catch((error) => {
+        logger.error(error);
         clearInterval(waitInterval);
-        callback(error || undefined);
+
+        // If Arc.js action then pass error to callback else set the context body.
+        if (this.isArcAction) {
+          callback(error);
+        } else {
+          context.response.body = error;
+          callback();
+        }
       });
   }
 }

@@ -7,6 +7,7 @@ const ShippingRatesController = require('../arc-actions/checkout/ShippingRatesCo
 const shippingRatesController = new ShippingRatesController();
 
 global.logServer = null;
+global.proxyServer = null;
 
 module.exports = {
   appInstall: {

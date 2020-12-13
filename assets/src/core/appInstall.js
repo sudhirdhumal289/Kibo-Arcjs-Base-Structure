@@ -3,6 +3,7 @@ const CustomRoutesApi = require('mozu-node-sdk/clients/commerce/settings/general
 const PostInstall = require('../post-install');
 const Logger = require('./Logger');
 const PromiseUtils = require('../utils/PromiseUtils');
+const globalConfig = require('../post-install/globalConfig');
 
 const logger = new Logger();
 
@@ -17,8 +18,11 @@ function registerActions(actionIds, entrypointManifest, context) {
 
     return finalConfig;
   }, {});
+
+  const globalConfigurator = (currentConfig) => Object.assign(currentConfig || {}, globalConfig || {});
+
   const installer = new ActionInstaller({ context: context.apiContext });
-  return installer.enableActions(context, null, actionConfigurator);
+  return installer.enableActions(context, globalConfigurator, actionConfigurator);
 }
 
 function registerCustomRoutes(actionIds, entrypointManifest, context) {
@@ -153,6 +157,6 @@ module.exports = (context, callback) => {
   const manifestProcessors = manifests.fileExports.map((manifestEntry) => processManifestFile(context, manifestEntry));
 
   PromiseUtils.allSettled(manifestProcessors)
-    .then(callback)
+    .then(() => callback())
     .catch(callback);
 };
