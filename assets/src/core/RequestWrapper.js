@@ -106,7 +106,6 @@ class RequestWrapper {
       callback();
     })
       .catch((error) => {
-        logger.error(error);
         clearInterval(waitInterval);
 
         // If Arc.js action then pass error to callback else set the context body.

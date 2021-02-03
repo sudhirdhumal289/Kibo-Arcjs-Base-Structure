@@ -17,7 +17,7 @@ module.exports = function request(options) {
 
     let reqOptions = {
       hostname: parsedUrl.hostname,
-      port: parsedUrl.port ? parsedUrl.port : 80,
+      port: parsedUrl.port || 80,
       path: parsedUrl.path,
       method: verb || 'GET',
     };
@@ -27,6 +27,7 @@ module.exports = function request(options) {
       reqOptions.rejectUnauthorized = false;
       reqOptions.requestCert = true;
       reqOptions.agent = false;
+      reqOptions.port = parsedUrl.port || 443;
     }
 
     if (headers) {
