@@ -59,6 +59,7 @@ module.exports = function request(options) {
         reqOptions.rejectUnauthorized = false;
         reqOptions.requestCert = true;
         reqOptions.agent = false;
+        reqOptions.port = parsedUrl.port || 443;
       }
     }
 
