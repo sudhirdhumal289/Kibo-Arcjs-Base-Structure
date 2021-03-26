@@ -31,7 +31,7 @@ class Logger {
       });
 
       // Loop to make sure request get delivered in time
-      for (let i = 0; i < 1000; i += 1) {
+      for (let i = 0; i < 2000; i += 1) {
         const tmp = i;
         i *= Math.random();
         i = tmp;
