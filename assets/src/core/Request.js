@@ -6,8 +6,10 @@ module.exports = function request(options) {
   if (!options || !options.url) return null;
 
   const {
-    timeout, headers, verb, url, key, cert,
+    timeout, headers, verb, url, key, cert, expectJson,
   } = options;
+
+  const expectJsonOpt = (expectJson === undefined || expectJson === null) ? true : expectJson;
 
   let { data } = options;
 
@@ -72,10 +74,12 @@ module.exports = function request(options) {
       response.on('end', () => {
         let endpointResponse = Buffer.concat(chunks).toString();
 
-        try {
-          endpointResponse = JSON.parse(endpointResponse);
-        } catch (e) {
-          // ignore - non-JSON response
+        if (expectJsonOpt) {
+          try {
+            endpointResponse = JSON.parse(endpointResponse);
+          } catch (e) {
+            // ignore - non-JSON response
+          }
         }
 
         resolve(endpointResponse);
