@@ -70,6 +70,24 @@ class EntityListUtils {
     return entityResource.insertEntity({ entityListFullName }, { body: entityData });
   }
 
+  updateEntity(context, entityListFullName, id, entityData) {
+    const entityResource = new EntityListEntity(context);
+    entityResource.context['user-claims'] = null;
+
+    return entityResource.updateEntity({ entityListFullName, id }, { body: entityData });
+  }
+
+  upsertEntity(context, entityListFullName, id, entityData) {
+    return new Promise((resolve, reject) => {
+      this.getEntityById(context, entityListFullName, id).then((existingEntityData) => {
+        this.updateEntity(context, entityListFullName, id, Object.assign(entityData, existingEntityData))
+          .then(resolve).catch(reject);
+      }).catch(() => {
+        this.insertEntity(context, entityListFullName, entityData).then(resolve).catch(reject);
+      });
+    });
+  }
+
   insertEntityIfNotFound(context, entityListFullName, id, entityData) {
     return new Promise((resolve, reject) => {
       this.getEntityById(context, entityListFullName, id).then(resolve).catch(() => {
