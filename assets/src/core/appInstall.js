@@ -3,7 +3,7 @@ const CustomRoutesApi = require('mozu-node-sdk/clients/commerce/settings/general
 const PostInstall = require('../post-install');
 const Logger = require('./Logger');
 const PromiseUtils = require('../utils/PromiseUtils');
-const globalConfig = require('../post-install/globalConfig');
+const globalConfig = require('../post-install/globalArcConfig');
 
 const logger = new Logger();
 
