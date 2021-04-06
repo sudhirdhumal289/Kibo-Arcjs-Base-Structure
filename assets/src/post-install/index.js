@@ -17,6 +17,7 @@ function proxy(instance, method) {
 
 module.exports = {
   postInstallActions: [
+    // proxy(entityListController, 'wipeEntityLists'),
     proxy(entityListController, 'createEntities'),
     proxy(entityListController, 'populateData'),
     proxy(documentListController, 'createDocumentLists'),
