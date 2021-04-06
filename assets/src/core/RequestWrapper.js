@@ -1,6 +1,8 @@
 const Logger = require('./Logger');
+const EntityListUtils = require('../resources/EntityListUtils');
 
 const logger = new Logger();
+const entityListUtils = new EntityListUtils();
 
 class RequestWrapper {
   init(controllerInstance, controllerMethod, config) {
@@ -53,7 +55,13 @@ class RequestWrapper {
 
   service(context, callback, isArcAction) {
     this.isArcAction = isArcAction;
-    const request = context.request || {};
+    const request = !this.isArcAction ? JSON.parse(JSON.stringify(context.request)) : context.request || {};
+    if (!this.isArcAction && context.request.body) {
+      request.body = JSON.parse(JSON.stringify(context.request.body));
+    }
+    if (!this.isArcAction && context.request.query) {
+      request.query = JSON.parse(JSON.stringify(context.request.query));
+    }
 
     const contextResp = context.response ? context.response : {};
     const response = {
@@ -63,12 +71,21 @@ class RequestWrapper {
       },
     };
 
-    // TODO - Check if Arc.js built-in action or custom-route action and pass req, resp accordingly
     // TODO - Set security headers
     // TODO - Check auth token validity
     // TODO - Check request source
 
-    const controllerActionPromise = this.callControllerAction(request, response, context);
+    const controllerActionPromise = new Promise((resolve, reject) => {
+      const entityListFullName = `Global_Config@${context.apiContext.appKey.split('.')[0]}`;
+      entityListUtils.getEntityById(context, entityListFullName, 'global_config')
+        .then((globalConfig) => {
+          request.globalConfig = globalConfig;
+          this.callControllerAction(request, response, context).then(resolve).catch(reject);
+        }).catch(() => {
+          request.globalConfig = {};
+          this.callControllerAction(request, response, context).then(resolve).catch(reject);
+        });
+    });
 
     let timeElapsed = 0;
     const waitInterval = setInterval(() => {
@@ -100,6 +117,8 @@ class RequestWrapper {
           context.response.redirect(resp.redirectUrl);
         } else if (finalResponse) {
           context.response.body = finalResponse;
+        } else {
+          context.response.body = {};
         }
       }
 
