@@ -74,15 +74,35 @@ module.exports = function request(options) {
       response.on('end', () => {
         let endpointResponse = Buffer.concat(chunks).toString();
 
-        if (expectJsonOpt) {
-          try {
-            endpointResponse = JSON.parse(endpointResponse);
-          } catch (e) {
-            // ignore - non-JSON response
-          }
-        }
+        if (global.proxyServer && url !== global.logServer) {
+          endpointResponse = JSON.parse(endpointResponse); // Proxy server is always going to return JSON
 
-        resolve(endpointResponse);
+          if (endpointResponse.statusCode >= 400) {
+            reject(endpointResponse.body);
+          } else {
+            endpointResponse = endpointResponse.body;
+
+            if (expectJsonOpt) {
+              try {
+                endpointResponse = JSON.parse(endpointResponse);
+              } catch (e) {
+                // ignore - non-JSON response
+              }
+            }
+
+            resolve(endpointResponse);
+          }
+        } else {
+          if (expectJsonOpt) {
+            try {
+              endpointResponse = JSON.parse(endpointResponse);
+            } catch (e) {
+              // ignore - non-JSON response
+            }
+          }
+
+          resolve(endpointResponse);
+        }
       });
     });
 
